@@ -1,0 +1,24 @@
+jobs:
+  include:
+    - stage: Tests
+      language: python  
+      python: 3.5
+      install:  
+        - pip3.5 install python-coveralls
+        - pip3.5 install coverage
+        - pip3.5 install -r requirements.txt
+      script:
+        - coverage run -a rethinkes.py
+        - coverage report
+      after_success:  
+        - coveralls
+
+    - stage: build-image
+      script:
+        - docker build -t $DOCKER_USER/rethinkes .
+
+      after_success:
+        - docker login -u $DOCKER_USER -p $DOCKER_PASS
+        - docker tag $DOCKER_USER/rethinkes $DOCKER_USER/rethinkes:$TRAVIS_BUILD_NUMBER;
+        - docker push $DOCKER_USER:$TRAVIS_BUILD_NUMBER;
+        - docker push $DOCKER_USER/rethinkes:latest
