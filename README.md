@@ -1,5 +1,5 @@
 # rethinkes
-Python program to sync rethinkdb database with elasticsearch
+Sync a rethinkdb database with elasticsearch
 
 ![pipeline status](https://travis-ci.org/gbnk0/rethinkes.svg?branch=master)
 ![coverage](https://coveralls.io/repos/github/gbnk0/rethinkes/badge.svg?branch=master)
