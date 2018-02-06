@@ -29,6 +29,7 @@ docker run -v /path/containing/config.conf:/etc/rethinkes/ gbnk0/rethinkes
 ##### GLOBAL
 
 **keep-id** : Keeps the rethinkdb document id when inserting into elasticsearch (useful for in place updates)
+**loop-time** *0*: Delay (in seconds) before re-syncing all the tables to elastic (0 = One shot)
 
 
 ##### RETHINKDB
