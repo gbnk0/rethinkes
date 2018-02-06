@@ -2,23 +2,23 @@
 import json
 import argparse
 import rethinkdb as r
+import configparser
 from elasticsearch import Elasticsearch
 
 parser = argparse.ArgumentParser()
-parser.add_argument('--keep-id', help='Keeps the rethinkdb document ID in elasticsearch', action='store_true')
-parser.add_argument('--rdbhost', help='Set the rethinkdb source host', default='localhost')
-parser.add_argument('--eshost', help='Set the elasticsearch dest hosts (comma separated if multiple)', default='localhost')
-parser.add_argument('--doctype', help='Set the doctype in ES (comma separated if multiple)', default='doc')
-parser.add_argument('--tables', help='Choose the tables to replicate (comma separated if multiple)', default='test')
-parser.add_argument('--database', help='Set the database name', default='test')
+parser.add_argument('--config', help='Choose a config file')
 args = parser.parse_args()
 
-rdbhost = args.rdbhost
-rdbport = 28015
-database = args.database
-tables = (args.tables).split(',')
-hosts = (args.eshost).split(',')
-doctype = args.doctype
+config = configparser.ConfigParser()
+config.read(args.config)
+
+keep_id = bool(config['global']['keep-id'])
+rdbhost = config['rethinkdb']['host']
+rdbport = config['rethinkdb']['port']
+database = config['rethinkdb']['database']
+tables = (config['rethinkdb']['tables']).split(',')
+hosts = (config['elasticsearch']['hosts']).split(',')
+doctype = config['elasticsearch']['doctype']
 
 r.connect(rdbhost, rdbport).repl()
 
@@ -34,7 +34,7 @@ for table in tables:
     for doc in cursor:
         options = {}
         
-        if args.keep_id:
+        if keep_id:
             options['id'] = doc['id']
 
         res = es.index(index=table, doc_type=doctype, body=doc, **options)

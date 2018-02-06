@@ -2,22 +2,32 @@
 Python program to sync rethinkdb database with elasticsearch
 
 
-#### USAGE EXAMPLE 
+#### USAGE EXAMPLE WITH PROVIDED EXAMPLE CONFIG FILE
 
 ```bash
-rethinkes.py --keep-id --eshost localhost --rdbhost localhost --tables posts --database backend
+rethinkes.py --config config.conf
 ```
 
-#### PARAMETERS
+#### CONFIG FILE PARAMETERS
 
-**--keep-id** : Keeps the rethinkdb document id when inserting into elasticsearch (useful for in place updates)
+##### GLOBAL
 
-**--eshost** *localhost* : Choose the elasticsearch destination host
+**keep-id** : Keeps the rethinkdb document id when inserting into elasticsearch (useful for in place updates)
 
-**--rdbhost** *localhost* : Choose the rethinkdb source server
 
-**--tables** *posts,users* : Choose the tables you want to sync
+##### RETHINKDB
 
-**--database** *testdb* :  Choose the source rethinkdb database
+**rdbhost** *localhost* : Choose the rethinkdb source server
 
-**--doctype** *mydoc* : Set an elasticsearch document type
+**rdbport** *28015* : Choose the rethinkdb source server
+
+**tables** *posts,users* : Choose the tables you want to sync
+
+**database** *testdb* :  Choose the source rethinkdb database
+
+
+##### ELASTICSEARCH
+
+**eshost** *localhost* : Choose the elasticsearch destination host
+
+**doctype** *mydoc* : Set an elasticsearch document type

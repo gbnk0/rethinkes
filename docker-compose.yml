@@ -1,0 +1,15 @@
+version: '2'
+services:
+  rethinkes:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    networks:
+      - dockernet
+    environment:
+      - args="--config config.conf"
+
+networks:
+  dockernet:
+    driver: bridge
+    
