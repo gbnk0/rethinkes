@@ -12,6 +12,18 @@ Python program to sync rethinkdb database with elasticsearch
 rethinkes.py --config config.conf
 ```
 
+#### QUICK START WITH DOCKER (DEFAULT CONFIG)
+
+```bash
+docker run gbnk0/rethinkes
+```
+
+#### WITH CUSTOM CONFIG FILE
+
+```bash
+docker run -v /path/containing/config.conf:/etc/rethinkes/ gbnk0/rethinkes
+```
+
 #### CONFIG FILE PARAMETERS
 
 ##### GLOBAL
