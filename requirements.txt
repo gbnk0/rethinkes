@@ -1,0 +1,2 @@
+rethinkdb==2.3.0.post6
+elasticsearch==6.1.1
