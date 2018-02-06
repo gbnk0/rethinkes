@@ -1,6 +1,10 @@
 # rethinkes
 Python program to sync rethinkdb database with elasticsearch
 
+![pipeline status](https://travis-ci.org/gbnk0/rethinkes.svg?branch=master)
+![coverage](https://coveralls.io/repos/github/gbnk0/rethinkes/badge.svg?branch=master)]
+![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+![python_version](https://img.shields.io/badge/python-3.5%2C3.6-blue.svg)]
 
 #### USAGE EXAMPLE WITH PROVIDED EXAMPLE CONFIG FILE
 

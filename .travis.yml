@@ -10,7 +10,7 @@ jobs:
       script:
         - coverage run -a rethinkes.py
         - coverage report
-      after_success:  
+      after_success:
         - coveralls
 
     - stage: build-image
