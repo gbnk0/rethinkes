@@ -26,15 +26,22 @@ def make_elastic_client(hosts):
         print('Error while connecting to elasticsearch')
 
 
-def start_sync(keep_id, rdbhost, rdbport, database, tables, hosts, doctype):
+def start_sync(keep_id, rdbhost, rdbport, database, tables, hosts, doctype, **kwargs):
     
+    create_index = kwargs.get('create_index', False)
+
     # Connect first to elasticsearch
     es = make_elastic_client(hosts)
-    
+
     # Connect to rethinkdb
     r.connect(rdbhost, rdbport).repl()
 
     for table in tables:
+        if create_index == False:
+            if not es.indices.exists(index=table):
+                print("Index not exists and I cannot create it")
+                sys.exit(0)
+
         cursor = r.db(database).table(table).run()
 
         for doc in cursor:
@@ -52,7 +59,7 @@ if args.config:
 
     config.read(args.config)
 
-    keep_id = bool(config['global']['keep-id'])
+    keep_id = bool(int(config['global']['keep-id']))
     looptime = int(config['global']['loop-time'])
     rdbhost = config['rethinkdb']['host']
     rdbport = config['rethinkdb']['port']
@@ -60,15 +67,17 @@ if args.config:
     tables = (config['rethinkdb']['tables']).split(',')
     hosts = (config['elasticsearch']['hosts']).split(',')
     doctype = config['elasticsearch']['doctype']
+    create_index = bool(int(config['elasticsearch']['create-index']))
 
-    sync_args = (keep_id, rdbhost, rdbport, database, tables, hosts, doctype)
+    sync_args = (keep_id, rdbhost, rdbport,
+                    database, tables, hosts, doctype)
 
     if looptime > 0:
         while True:
-            start_sync(*sync_args)
+            start_sync(*sync_args, create_index=create_index)
             sleep(looptime)
     
-    start_sync(*sync_args)
+    start_sync(*sync_args, create_index=create_index)
 
 if args.test:
     sys.exit(0)
