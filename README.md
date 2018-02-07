@@ -48,3 +48,5 @@ docker run -v /path/containing/config.conf:/etc/rethinkes/ gbnk0/rethinkes
 **eshost** *localhost* : Choose the elasticsearch destination host
 
 **doctype** *mydoc* : Set an elasticsearch document type
+
+**create-index** *0* : Create index if not exists
