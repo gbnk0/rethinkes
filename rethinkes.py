@@ -32,7 +32,7 @@ if args.config:
         es = Elasticsearch(hosts,
                 sniff_on_start=True,
                 sniff_on_connection_fail=True,
-                retry_on_timeout=True
+                retry_on_timeout=True,
                 sniffer_timeout=60,
                 http_auth=('elastic', 'changeme'))
 
