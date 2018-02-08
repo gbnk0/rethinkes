@@ -4,7 +4,7 @@ import argparse
 import rethinkdb as r
 import configparser
 from time import sleep
-from retrying import retry
+# from retrying import retry
 from elasticsearch import Elasticsearch
 
 parser = argparse.ArgumentParser()
@@ -12,7 +12,7 @@ parser.add_argument('--config', help='Choose a config file')
 parser.add_argument('--test', help='Test and exit', action="store_true")
 args = parser.parse_args()
 
-@retry(wait_fixed=5000)
+# @retry(wait_fixed=5000)
 def make_elastic_client(hosts):
     try:
         es = Elasticsearch(hosts,
@@ -41,6 +41,8 @@ def start_sync(keep_id, rdbhost, rdbport, database, tables, hosts, doctype, **kw
             if not es.indices.exists(index=table):
                 print("Index not exists and I cannot create it")
                 sys.exit(0)
+        else:
+            es.indices.create(index=table, ignore=400)
 
         cursor = r.db(database).table(table).run()
 
@@ -48,7 +50,9 @@ def start_sync(keep_id, rdbhost, rdbport, database, tables, hosts, doctype, **kw
             options = {}
 
             if keep_id == True:
-                options['id'] = doc['id']
+                options = {
+                    "id" : doc['id']
+                }
 
             res = es.index(index=table, doc_type=doctype,
                             body=doc, **options)
