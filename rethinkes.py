@@ -29,6 +29,7 @@ def make_elastic_client(hosts):
 def start_sync(keep_id, rdbhost, rdbport, database, tables, hosts, doctype, **kwargs):
     
     create_index = kwargs.get('create_index', False)
+    wait_for_index = kwargs.get('wait_for_index', False)
 
     # Connect first to elasticsearch
     es = make_elastic_client(hosts)
@@ -37,6 +38,11 @@ def start_sync(keep_id, rdbhost, rdbport, database, tables, hosts, doctype, **kw
     r.connect(rdbhost, rdbport).repl()
 
     for table in tables:
+        if wait_for_index:
+            while not es.indices.exists(index=table):
+                print('Waiting for index to be created...')
+                sleep(1)
+
         if create_index == False:
             if not es.indices.exists(index=table):
                 print("Index not exists and I cannot create it")
@@ -72,13 +78,14 @@ if args.config:
     hosts = (config['elasticsearch']['hosts']).split(',')
     doctype = config['elasticsearch']['doctype']
     create_index = bool(int(config['elasticsearch']['create-index']))
+    wait_for_index = bool(int(config['elasticsearch']['wait-for-index']))
 
     sync_args = (keep_id, rdbhost, rdbport,
                     database, tables, hosts, doctype)
 
     if looptime > 0:
         while True:
-            start_sync(*sync_args, create_index=create_index)
+            start_sync(*sync_args, create_index=create_index, wait_for_index=wait_for_index)
             sleep(looptime)
     
     start_sync(*sync_args, create_index=create_index)
