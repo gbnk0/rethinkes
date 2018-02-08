@@ -36,7 +36,7 @@ docker run -v /path/containing/config.conf:/etc/rethinkes/ gbnk0/rethinkes
 
 **rdbhost** *localhost* : Choose the rethinkdb source server
 
-**rdbport** *28015* : Choose the rethinkdb source server
+**rdbport** *28015* : Choose the rethinkdb port
 
 **tables** *posts,users* : Choose the tables you want to sync
 
