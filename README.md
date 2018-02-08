@@ -50,3 +50,5 @@ docker run -v /path/containing/config.conf:/etc/rethinkes/ gbnk0/rethinkes
 **doctype** *mydoc* : Set an elasticsearch document type
 
 **create-index** *0* : Create index if not exists
+
+**wait-for-index** *1* : Wait for index to be created , nothing will be replicated until you create the index
